@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import PasswordInput from "../../components/input/Passwordinput";
+import PasswordInput from "../../components/Input/PasswordInput";
 import { Link } from "react-router-dom";
 import { validateEmail } from "../../utils/helper";
 const SignUp = () => {

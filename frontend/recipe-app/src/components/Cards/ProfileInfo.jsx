@@ -9,7 +9,7 @@ const ProfileInfo = ({ onLogout }) =>{
                 </div>
 
             <div>
-                <p className="text-sm font medium">John Willam</p>
+                <p className="text-sm font medium">John Willam Hello</p>
                 <button className="text-sm text-slate-700 underline" onClick={onLogout}>Logout</button>
             </div>
 
