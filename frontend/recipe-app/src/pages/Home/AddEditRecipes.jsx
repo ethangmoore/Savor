@@ -166,3 +166,5 @@ const AddEditRecipes = ({ recipeData, type, onClose }) => {
         </div>
     )
 }
+
+export default AddEditRecipes;
