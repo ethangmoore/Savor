@@ -48,7 +48,7 @@ const SignUp = () => {
                         {error && <p className="text-red-500 text-xs pb-1">{error}</p>}
 
                         <button type="submit" className="btn-primary">Create Account</button>
-                        hello
+                        
                         <p className="text-sm text-center mt-4">Already have an account{" "}<Link to="/login" className="front-medium text-primary underline">Login</Link></p>
                     </form>
                 </div>
