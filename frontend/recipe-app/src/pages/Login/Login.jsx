@@ -25,7 +25,8 @@ const Login = () => {
 
     setError()
 
-    //Login API call
+    // Login API Call
+
   };
 
     return (
