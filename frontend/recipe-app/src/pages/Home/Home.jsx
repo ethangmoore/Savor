@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect,  useState } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import RecipeCard from '../../components/Cards/RecipeCard'
 import { MdAdd } from "react-icons/md";
 import AddEditRecipes from './AddEditRecipes';
 import Modal from "react-modal";
+import { useNavigate } from "react-router-dom"; 
+import moment from "moment";
+import  axiosInstance  from "../../utils/axiosInstance";
 
 const Home = () => {
 
@@ -13,27 +16,74 @@ const Home = () => {
         data: null
     })
 
+    const [allRecipes, setAllRecipes] = useState([])
+
+    const [userInfo, setUserInfo] = useState(null);
+
+    const navigate = useNavigate();
+
+    // Get User Info
+    const getUserInfo = async () => {
+        try {
+            const response = await axiosInstance.get("/get-user");
+            if (response.data && response.data.user){
+                setUserInfo(response.data.user);
+            } 
+        } catch (error){
+            if (error.response.status === 401) {
+                localStorage.clear();
+                navigate("/login");
+            }
+        }
+    };
+
+    // All Recipes API
+
+    const getAllRecipes = async () => {
+        try{
+            const response = await axiosInstance.get("/get-all-recipes");
+
+            if (response.data && response.data.recipes) {
+                setAllRecipes(response.data.recipes);
+            }
+        } catch (error) {
+            console.log("An unexpected error occurred. Please try again");
+
+        }
+    };
+
+    useEffect( () => {
+        getAllRecipes();
+        getUserInfo();
+        return () => {};
+    },  []);
+
+
     return (
         <>
-            <Navbar />
+            <Navbar userInfo={userInfo} />
 
             <div className="container mx-auto">
                 <div className="grid grid-cols-3 gap-4 mt-8">
+                    {allRecipes.map((item, index)=>(
                     <RecipeCard
-                        title="Best Recipe Ever"
-                        date="3rd Apr 2024"
-                        servings="4000"
+                    key={item._id}
+                        title={item.title}
+                        date={item.createdOn}
+                        servings={item.servings}
                         cuisineType="American"
                         cookTime="90 years maybe"
                         description="best meal on earth"
                         ingredients="frog legs"
                         directions="dont burn yourself"
-                        tags="froggy"
-                        isPinned={true}
+                        tags={item.tags}
+                        isPinned={item.isPinned}
                         onEdit={() => { }}
                         onDelete={() => { }}
                         onPinNote={() => { }}
                     />
+                    ))}
+                    
                 </div>
             </div>
 
