@@ -53,7 +53,7 @@ const Home = () => {
                 setUserInfo(response.data.user);
             }
         } catch (error) {
-            if (error.response.status === 401) {
+            if (error.response && error.response.status === 401) {
                 localStorage.clear();
                 navigate("/login");
             }
@@ -74,23 +74,19 @@ const Home = () => {
 
     // Delete Recipe
     const deleteRecipe = async (data) => {
-        const recipeId = data._id
+        const recipeId = data._id;
         try {
-            const responce = await axoisinstance.delete("/delete-recipe/" + noteId);
-   
-
-            if (response.data && !responce.date.error) {
-                showToastMessage("Recipe Deleted Successfully", 'delete')
-                getAllRecipes()
+            const response = await axiosInstance.delete("/delete-recipe/" + recipeId);
+            if (response.data && !response.data.error) {
+                showToastMessage("Recipe Deleted Successfully", 'delete');
+                getAllRecipes();
             }
         } catch (error) {
-            if (
-                error.response && error.response.data && error.response.data.message
-            ) {
+            if (error.response && error.response.data && error.response.data.message) {
                 console.log("An unexpected error has occurred. Please try again.");
             }
         }
-    }
+    };
 
     useEffect(() => {
         getAllRecipes();

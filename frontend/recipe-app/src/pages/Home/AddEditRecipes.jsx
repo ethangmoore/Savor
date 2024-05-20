@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
+import axiosInstance from '../../utils/axiosInstance'; // Adjust the path as necessary
 
 const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMessage }) => {
-    const [title, setTitle] = useState(recipeData?.title ||"");
-    const [servings, setServings] = useState(recipeData?.servings ||"");
-    const [cuisine, setCuisine] = useState(recipeData?.cuisine ||"");
-    const [cookTime, setCookTime] = useState(recipeData?.cookTime ||"");
-    const [description, setDescription] = useState(recipeData?.description ||"");
-    const [ingredients, setIngredients] = useState(recipeData?.ingredients ||"");
-    const [directions, setDirections] = useState(recipeData?.directions ||"");
+    const [title, setTitle] = useState(recipeData?.title || "");
+    const [servings, setServings] = useState(recipeData?.servings || "");
+    const [cuisine, setCuisine] = useState(recipeData?.cuisine || "");
+    const [cookTime, setCookTime] = useState(recipeData?.cookTime || "");
+    const [description, setDescription] = useState(recipeData?.description || "");
+    const [ingredients, setIngredients] = useState(recipeData?.ingredients || "");
+    const [directions, setDirections] = useState(recipeData?.directions || "");
     const [tags, setTags] = useState(recipeData?.tags || []);
 
     const [error, setError] = useState(null);
 
-    //Add Recipe
+    // Add Recipe
     const addNewRecipe = async () => {
         try {
-            const responce = await axoisinstance.post("/add-recipe", {
+            const response = await axiosInstance.post("/add-recipe", {
                 title,
                 servings,
                 cuisine,
@@ -25,27 +26,26 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
                 description,
                 ingredients,
                 directions,
+                tags
             });
 
-            if (response.data && responce.date.note) {
-                showToastMessage("Recipe Added Successfully")
+            if (response.data && response.data.note) {
+                showToastMessage("Recipe Added Successfully", 'add');
                 getAllRecipes();
                 onClose();
             }
         } catch (error) {
-            if (
-                error.response && error.response.data && error.response.data.message
-            ) {
+            if (error.response && error.response.data && error.response.data.message) {
                 setError(error.response.data.message);
             }
         }
     };
 
-    //Edit Recipe
+    // Edit Recipe
     const editRecipe = async () => {
-        const recipeId = recipeData._id
+        const recipeId = recipeData._id;
         try {
-            const responce = await axoisinstance.post("/edit-recipe/" + noteId, {
+            const response = await axiosInstance.post("/edit-recipe/" + recipeId, {
                 title,
                 servings,
                 cuisine,
@@ -53,17 +53,16 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
                 description,
                 ingredients,
                 directions,
+                tags
             });
 
-            if (response.data && responce.date.note) {
-                showToastMessage("Recipe Updated Successfully")
-                getAllRecipes()
-                onClose()
+            if (response.data && response.data.note) {
+                showToastMessage("Recipe Updated Successfully", 'edit');
+                getAllRecipes();
+                onClose();
             }
         } catch (error) {
-            if (
-                error.response && error.response.data && error.response.data.message
-            ) {
+            if (error.response && error.response.data && error.response.data.message) {
                 setError(error.response.data.message);
             }
         }
@@ -107,22 +106,22 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
         setError("");
 
-        if(type === "edit"){
-            editRecipe()
-        }else{
-            addNewRecipe()
+        if (type === "edit") {
+            editRecipe();
+        } else {
+            addNewRecipe();
         }
-    }
+    };
 
     return (
         <div className="relative">
             <button className="w-10 h-10 rounded-full flex items-center justify-center absolute -top-3 -right-3 hover:bg-slate-50" onClick={onClose}>
-                <MdClose className="text-xl text-slate-400"/>
+                <MdClose className="text-xl text-slate-400" />
             </button>
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">TITLE</label>
-                <input 
+                <input
                     type="text"
                     className="text-2xl text-slate-950 outline-none"
                     placeholder="Type title here..."
@@ -131,10 +130,9 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
                 />
             </div>
 
-
             <div className="flex flex-col gap-2">
                 <label className="input-label">SERVINGS</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type servings here..."
@@ -145,7 +143,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">CUISINE</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type cuisine type here..."
@@ -156,7 +154,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">COOK TIME</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type cook time here..."
@@ -167,7 +165,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">DESCRIPTION</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type description here..."
@@ -178,7 +176,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">INGREDIENTS</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type ingredients here..."
@@ -189,7 +187,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             <div className="flex flex-col gap-2">
                 <label className="input-label">DIRECTIONS</label>
-                <input 
+                <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type directions here..."
@@ -205,7 +203,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
 
             {error && <p className="text-red-500 text-xs pt-4">{error}</p>}
 
-            <button 
+            <button
                 className="btn-primary font-medium mt-5 p-3"
                 onClick={handleAddRecipe}
             >
