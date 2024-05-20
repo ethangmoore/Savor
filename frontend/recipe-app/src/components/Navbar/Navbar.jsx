@@ -6,7 +6,7 @@ import SearchBar from '../SearchBar/SearchBar';
 const Navbar = ({userInfo}) => {
     const {searchQuery, setSearchQuery} = useState("");
 
-    const navigate = useNavigate;
+    const navigate = useNavigate();
     
     const onLogout = () => {
         localStorage.clear()

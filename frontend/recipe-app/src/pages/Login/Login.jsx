@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,15 +30,15 @@ const Login = () => {
 
     // Login API Call
     try{
-        const response = await axiosInstance.post("/login",{
+        const response = await axiosInstance.post("/login", {
             email: email,
             password: password,
         });
      
        // Handle succcessful login response
-       if(response.data && response.data.accessToken){
-        localStorage.setItem("token", response.data.accessToken)
-        Navigate("/dashboard");
+       if(response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/dashboard");
        }
     } catch (error) {
         // Handle login error
