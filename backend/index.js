@@ -61,7 +61,7 @@ app.post("/create-account", async (req, res) => {
         });
     }
 
-    const user = newUser({
+    const user = new User({
         fullName,
         email,
         password,
@@ -104,7 +104,7 @@ app.post("/login", async (req, res) => {
     if (userInfo.email == email && userInfo.password == password) {
         const user = { user: userInfo };
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-            expireIn: "36000m"
+            expiresIn: "36000m"
         });
 
         return res.json({
@@ -242,7 +242,7 @@ app.get("/get-all-recipes/", authenticateToken, async (req, res) => {
     const { user } = req.user;
 
     try {
-        const recipes = await Recipe.find({ user:user._id         
+        const recipes = await Recipe.find({ userId:user._id         
         }).sort({ isPinned: -1     
         });
 
