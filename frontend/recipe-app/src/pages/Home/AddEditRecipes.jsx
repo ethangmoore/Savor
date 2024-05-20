@@ -2,24 +2,72 @@ import React, { useState } from "react";
 import TagInput from "../../components/Input/TagInput";
 import { MdClose } from "react-icons/md";
 
-const AddEditRecipes = ({ recipeData, type, onClose }) => {
-
-    const [title, setTitle] = useState("");
-    const [servings, setServings] = useState("");
-    const [cuisine, setCuisine] = useState("");
-    const [cookTime, setCookTime] = useState("");
-    const [description, setDescription] = useState("");
-    const [ingredients, setIngredients] = useState("");
-    const [directions, setDirections] = useState("");
-    const [tags, setTags] = useState([]);
+const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMessage }) => {
+    const [title, setTitle] = useState(recipeData?.title ||"");
+    const [servings, setServings] = useState(recipeData?.servings ||"");
+    const [cuisine, setCuisine] = useState(recipeData?.cuisine ||"");
+    const [cookTime, setCookTime] = useState(recipeData?.cookTime ||"");
+    const [description, setDescription] = useState(recipeData?.description ||"");
+    const [ingredients, setIngredients] = useState(recipeData?.ingredients ||"");
+    const [directions, setDirections] = useState(recipeData?.directions ||"");
+    const [tags, setTags] = useState(recipeData?.tags || []);
 
     const [error, setError] = useState(null);
 
     //Add Recipe
-    const addNewRecipe = async () => {};
+    const addNewRecipe = async () => {
+        try {
+            const responce = await axoisinstance.post("/add-recipe", {
+                title,
+                servings,
+                cuisine,
+                cookTime,
+                description,
+                ingredients,
+                directions,
+            });
+
+            if (response.data && responce.date.note) {
+                showToastMessage("Recipe Added Successfully")
+                getAllRecipes();
+                onClose();
+            }
+        } catch (error) {
+            if (
+                error.response && error.response.data && error.response.data.message
+            ) {
+                setError(error.response.data.message);
+            }
+        }
+    };
 
     //Edit Recipe
-    const editRecipe = async () => {};
+    const editRecipe = async () => {
+        const recipeId = recipeData._id
+        try {
+            const responce = await axoisinstance.post("/edit-recipe/" + noteId, {
+                title,
+                servings,
+                cuisine,
+                cookTime,
+                description,
+                ingredients,
+                directions,
+            });
+
+            if (response.data && responce.date.note) {
+                showToastMessage("Recipe Updated Successfully")
+                getAllRecipes()
+                onClose()
+            }
+        } catch (error) {
+            if (
+                error.response && error.response.data && error.response.data.message
+            ) {
+                setError(error.response.data.message);
+            }
+        }
+    };
 
     const handleAddRecipe = () => {
         if (!title) {
@@ -161,10 +209,10 @@ const AddEditRecipes = ({ recipeData, type, onClose }) => {
                 className="btn-primary font-medium mt-5 p-3"
                 onClick={handleAddRecipe}
             >
-                ADD
+                {type === 'edit' ? 'UPDATE' : 'ADD'}
             </button>
         </div>
-    )
-}
+    );
+};
 
 export default AddEditRecipes;

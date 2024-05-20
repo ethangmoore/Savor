@@ -27,6 +27,8 @@ app.get("/", (req, res) => {
     res.json({ data: "hello" });
 });
 
+//Backend Ready!!!
+
 // Create Account
 app.post("/creat-account", async (req, res) => {
 
@@ -103,7 +105,7 @@ app.post("/login", async (req, res) => {
     if (userInfo.email == email && userInfo.password == password) {
         const user = { user: userInfo };
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
-            expireIn: "3600m"
+            expiresIn: "3600m"
         });
 
         return res.json({
@@ -119,6 +121,22 @@ app.post("/login", async (req, res) => {
             message: "Invalid Credentials",
         });
     }
+});
+
+//Get User
+app.get("/get-user", async (req, res) => {
+    const { user } = req.user;
+
+    const isUser = await User.findOne({_id: user._id });
+
+    if (!isUser) {
+        return res.sendStatus(401)
+    }
+
+    return res.json({
+        user: {fullName: isUser.fullName, email: isUser.email, "_id": isUser._id, createdOn: isUser.createdOn},
+        message: "",
+    });
 });
 
 //Add Recipe
@@ -234,6 +252,67 @@ app.get("/get-all-recipes/", authenticateToken, async (req, res) => {
         return res.status(500).json({
             error: true,
             message: "Internal Server Error",
+        });
+    }
+});
+
+//Delete Recipe
+app.delete("/delete-recipe/:recipeId", authenticateToken, async (req, res) => {
+    const recipeId = req.params.noteId;
+    const { user } = req.user;
+
+    try {
+        const recipe = await Recipe.findOne({_id: recipeId, userId: user._id
+        });
+
+        if(!recipe) {
+            return res.status(400).json({ error: true, message: "Recipe Not Found" 
+            });
+
+        }
+
+        await Recipe.deleteOne({_id: recipeId, userId: user._id
+        });
+
+        return res.json({
+            error: false,
+            message: "Recipe Deleted Successfully",
+
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal Server Error",
+        });
+    }
+})
+
+//Update isPinned Value
+app.put("/update-recipe-pinned/:recipeId", authenticateToken, async (req, res) => {
+    const recipeId = req.params.recipeId;
+    const { title, servings, cuisineType, tags, isPinned } = req.body;
+    const { user } = req.user;
+
+    try {
+        const recipe = await Recipe.findOne({ _id: recipeId, userId: user._id });
+
+        if (!recipe) {
+            return res.status(404).json({ error: true, message: "Recipe not found" });
+        }
+
+        recipe.isPinned = isPinned;
+
+        await recipe.save();
+
+        return res.json({
+            error: false,
+            recipe,
+            message: "Recipe updated successfully",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "internal Server Error",
         });
     }
 });
