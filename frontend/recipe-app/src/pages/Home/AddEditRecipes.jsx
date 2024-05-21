@@ -6,7 +6,7 @@ import axiosInstance from '../../utils/axiosInstance'; // Adjust the path as nec
 const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMessage }) => {
     const [title, setTitle] = useState(recipeData?.title || "");
     const [servings, setServings] = useState(recipeData?.servings || "");
-    const [cuisine, setCuisine] = useState(recipeData?.cuisine || "");
+    const [cuisineType, setCuisineType] = useState(recipeData?.cuisineType || "");
     const [cookTime, setCookTime] = useState(recipeData?.cookTime || "");
     const [description, setDescription] = useState(recipeData?.description || "");
     const [ingredients, setIngredients] = useState(recipeData?.ingredients || "");
@@ -21,7 +21,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
             const response = await axiosInstance.post("/add-recipe", {
                 title,
                 servings,
-                cuisine,
+                cuisineType,
                 cookTime,
                 description,
                 ingredients,
@@ -48,7 +48,7 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
             const response = await axiosInstance.post("/edit-recipe/" + recipeId, {
                 title,
                 servings,
-                cuisine,
+                cuisineType,
                 cookTime,
                 description,
                 ingredients,
@@ -71,26 +71,6 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
     const handleAddRecipe = () => {
         if (!title) {
             setError("Please enter a title");
-            return;
-        }
-
-        if (!servings) {
-            setError("Please enter servings amount");
-            return;
-        }
-
-        if (!cuisine) {
-            setError("Please enter cuisine type");
-            return;
-        }
-
-        if (!cookTime) {
-            setError("Please enter cook time");
-            return;
-        }
-
-        if (!description) {
-            setError("Please enter a description");
             return;
         }
 
@@ -142,13 +122,13 @@ const AddEditRecipes = ({ recipeData, type, getAllRecipes, onClose, showToastMes
             </div>
 
             <div className="flex flex-col gap-2">
-                <label className="input-label">CUISINE</label>
+                <label className="input-label">CUISINE TYPE</label>
                 <input
                     type="text"
                     className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                     placeholder="Type cuisine type here..."
-                    value={cuisine}
-                    onChange={({ target }) => setCuisine(target.value)}
+                    value={cuisineType}
+                    onChange={({ target }) => setCuisineType(target.value)}
                 />
             </div>
 
