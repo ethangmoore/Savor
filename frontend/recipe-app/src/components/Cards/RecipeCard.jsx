@@ -43,7 +43,7 @@ const RecipeCard = ({
 
 
             <div className="flex items-center justify-between mt-2">
-                <div className="text-xs text-slate-500">{tags.map((item)=> `#${item}`)}</div>
+                <div className="text-xs text-slate-500">{tags.map((item)=> `#${item} `)}</div>
 
                 <div className="flex items-center gap-2">
                     <MdCreate
