@@ -158,13 +158,19 @@ const Home = () => {
         toggleDarkMode={toggleDarkMode}
       />
 
-      <div className="container mx-auto">
+      <div
+        className={`container mx-auto pb-24 ${
+          isDarkMode ? "text-white" : "text-black"
+        }`}
+      >
         {isSearch && (
-          <h3 className="text-lg font-medium mt-5">Search Results</h3>
+          <h3 className="pl-4 sm:p-0 text-lg font-medium mt-5">
+            Search Results
+          </h3>
         )}
 
         {allRecipes.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 px-2 sm:px-0">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 px-2 sm:px-0 overflow-auto max-h-[calc(100vh-160px)]">
             {allRecipes.map((item) => {
               return (
                 <RecipeCard
@@ -195,12 +201,13 @@ const Home = () => {
                 : `Create your first recipe! Click the 'Add' button 
                 to share your treat with the world. Let's get started!`
             }
+            isDarkMode={isDarkMode}
           />
         )}
       </div>
 
       <button
-        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-blue-400 hover:bg-purple-400 absolute right-10 bottom-10"
+        className="w-16 h-16 flex items-center justify-center rounded-2xl bg-blue-400 hover:bg-purple-400 fixed right-10 bottom-10"
         onClick={() => {
           setOpenAddEditModal({ isShown: true, type: "add", data: null });
         }}
