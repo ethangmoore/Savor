@@ -132,7 +132,7 @@ const AddEditRecipes = ({
       </button>
 
       <div className="flex flex-col gap-2 pb-2">
-        <label className="input-label text-2xl">TITLE</label>
+        <label className="input-label text-2xl">TITLE<span className="text-red-500 ml-1">*</span></label>
         <input
           type="text"
           className="text-2xl text-slate-950 outline-none bg-slate-50 p-2 rounded"
@@ -187,7 +187,7 @@ const AddEditRecipes = ({
       </div>
 
       <div className="flex flex-col gap-2 pb-2">
-        <label className="input-label">INGREDIENTS</label>
+        <label className="input-label">INGREDIENTS<span className="text-red-500 ml-1">*</span></label>
         <input
           type="text"
           className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
@@ -198,7 +198,7 @@ const AddEditRecipes = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="input-label">DIRECTIONS</label>
+        <label className="input-label">DIRECTIONS<span className="text-red-500 ml-1">*</span></label>
         <input
           type="text"
           className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"

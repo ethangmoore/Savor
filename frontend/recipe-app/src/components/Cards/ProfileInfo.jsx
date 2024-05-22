@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { getInitials } from "../../utils/helper";
 import close from "../../assets/images/close.svg";
 import menu from "../../assets/images/menu.svg";
+import { BsSun, BsMoon } from "react-icons/bs";
 
-const ProfileInfo = ({ userInfo, onLogout }) => {
+const ProfileInfo = ({ userInfo, onLogout, isDarkMode, toggleDarkMode }) => {
   const [toggle, setToggle] = useState(false);
 
   return (
@@ -25,7 +26,23 @@ const ProfileInfo = ({ userInfo, onLogout }) => {
           absolute top-28 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}
         >
           <ul className="list-none flex flex-col justify-end items-center flex-1">
-            <li className="text-sm font medium pb-2">{userInfo.fullName}</li>
+            <li className="text-md font medium pb-2">{userInfo.fullName}</li>
+            <li>
+              <button
+                className="text-sm flex items-center pb-2"
+                onClick={toggleDarkMode}
+              >
+                {isDarkMode ? (
+                  <>
+                    <BsSun className="text-yellow-500" />
+                  </>
+                ) : (
+                  <>
+                    <BsMoon className="text-gray-700" />
+                  </>
+                )}
+              </button>
+            </li>
             <li>
               <button
                 className="text-sm text-slate-700 underline"

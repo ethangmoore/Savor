@@ -15,6 +15,7 @@ const Home = () => {
   const [allRecipes, setAllRecipes] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [isSearch, setIsSearch] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -139,12 +140,22 @@ const Home = () => {
     return () => {};
   }, []);
 
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
   return (
-    <>
+    <div
+      className={
+        isDarkMode ? "bg-gray-800 min-h-screen" : "bg-white min-h-screen"
+      }
+    >
       <Navbar
         userInfo={userInfo}
         onSearchRecipe={onSearchRecipe}
         handleClearSearch={handleClearSearch}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
       />
 
       <div className="container mx-auto">
@@ -153,7 +164,7 @@ const Home = () => {
         )}
 
         {allRecipes.length > 0 ? (
-          <div className="grid grid-cols-3 gap-4 mt-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 px-2 sm:px-0">
             {allRecipes.map((item) => {
               return (
                 <RecipeCard
@@ -206,7 +217,7 @@ const Home = () => {
           },
         }}
         contentLabel=""
-        className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
+        className="w-[60%] sm:w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
       >
         <AddEditRecipes
           type={openAddEditModal.type}
@@ -225,7 +236,7 @@ const Home = () => {
         type={showToastMsg.type}
         onClose={handleCloseToast}
       />
-    </>
+    </div>
   );
 };
 
