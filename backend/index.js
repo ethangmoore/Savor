@@ -17,11 +17,12 @@ const { authenticateToken } = require("./utilities");
 
 app.use(express.json());
 
-app.use(
-  cors({
-    origins: "*",
-  })
-);
+const corsOptions = {
+  origin: 'https://main--projectsavor.netlify.app/', // Replace with your Netlify domain
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 app.get("/", (req, res) => {
   res.json({ data: "backend ready" });
@@ -377,6 +378,9 @@ app.get("/search-recipes", authenticateToken, async (req, res) => {
   }
 });
 
-app.listen(8000);
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;
