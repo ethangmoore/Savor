@@ -18,7 +18,7 @@ const { authenticateToken } = require("./utilities");
 app.use(express.json());
 
 const corsOptions = {
-  origin: 'https://main--projectsavor.netlify.app/', // Replace with your Netlify domain
+  origin: 'https://projectsavor.netlify.app/', // Replace with your Netlify domain
   optionsSuccessStatus: 200
 };
 
