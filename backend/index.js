@@ -17,29 +17,29 @@ const { authenticateToken } = require("./utilities");
 
 app.use(express.json());
 
-// const allowedOrigins = [
-//   'https://projectsavor.netlify.app',
-//   //'http://127.0.0.1:5173'
-// ];
+const allowedOrigins = [
+  'https://projectsavor.netlify.app',
+  //'http://127.0.0.1:5173'
+];
 
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   optionsSuccessStatus: 200
-// };
+const corsOptions = {
+  origins: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  optionsSuccessStatus: 200
+};
 
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
-app.use(
-  cors({
-    origins: "*",
-  })
-);
+// app.use(
+//   cors({
+//     origins: "*",
+//   })
+// );
 
 app.get("/", (req, res) => {
   res.json({ data: "backend ready" });
